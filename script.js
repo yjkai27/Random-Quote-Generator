@@ -1,44 +1,32 @@
-* {
-  transition: all 0.5s ease-in-out;
-}
-.container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 80vh;
-  padding: 20px;
+async function getRandomQuote() {
+  try {
+    const response = await fetch('https://api.quotable.io/random');
+    const data = await response.json();
+    const quote = data.content;
+    const author = data.author;
+    const quoteElement = document.getElementById('quote');
+    const authorElement = document.getElementById('author');
+    quoteElement.textContent = quote;
+    authorElement.textContent = "- " + author;
+
+    const randomColor = getColor();
+    document.body.style.backgroundColor = randomColor;
+    quoteElement.style.color = randomColor;
+    authorElement.style.color = randomColor;
+    document.querySelector('h1').style.color = randomColor;
+    document.querySelector('button').style.backgroundColor = randomColor;
+    
+  } catch (error) {
+    console.log('Error:', error);
+  }
 }
 
-.quote-box {
-  background-color: #f5f5f5;
-  padding: 20px;
-  margin-bottom: 20px;
-  font-family: serif;
-  border-radius: 10px;
+function getColor() {
+  const letters = '0123456789ABCDEF';
+  let color = '#';
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 12)]; 
+  }
+  return color;
 }
-
-#quote {
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-#author {
-  font-size: 18px;
-  font-style: italic;
-}
-
-button {
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  font-size: 18px;
-  cursor: pointer;
-  font-family: serif;
-  border-radius: 5px;
-}
-.made-by {
-  color: white; 
-}
+getRandomQuote();
